@@ -16,6 +16,11 @@ try:
 except ImportError:  # no cover
     from urllib import parse as urlparse
 
+try:
+    getargspec = inspect.getfullargspec
+except AttributeError:
+    getargspec = inspect.getargspec
+
 resource_listing_endpoint = None
 
 
@@ -460,7 +465,7 @@ def add_model(model_class):
 
         # Credits for this snippet go to Robin Walsh
         # https://github.com/hobbeswalsh/flask-sillywalk
-        argspec = inspect.getargspec(model_class.__init__)
+        argspec = getargspec(model_class.__init__)
         argspec.args.remove("self")
         defaults = {}
         required = model["required"] = []
